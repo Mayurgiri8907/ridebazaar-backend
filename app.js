@@ -15,7 +15,7 @@ app.get("/", (req,res) => {
 
 
 connectdb().then(() => {
-    app.listen(process.env.PORT, (error) => {
+    app.listen(process.env.PORT || 8000, (error) => {
         console.log(error);
     });
 }).catch((error) => {
