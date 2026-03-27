@@ -11,6 +11,6 @@ const auth = require('../middleware/auth');
 
 // const upload = multer({ dest: "images/" });
 
-router.post("/add",auth,upload.array("images", 4),vahicalController.addvahical );
+router.post("/add",upload.array("images", 4),vahicalController.addvahical );
 
 module.exports = router;
