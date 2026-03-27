@@ -26,7 +26,7 @@ const vehicleSchema = new mongoose.Schema(
 
     fuel: {
       type: [String],
-      enum: ["Petrol", "Diesel", "CNG", "Eletric"],
+      enum: ["Petrol", "Diesel", "CNG"],
       required: true,
     },
 
