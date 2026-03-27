@@ -1,9 +1,9 @@
-const userModel = require('../model/user');
+const adminModel = require('../model/admin');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 
-const usersingup = async (req,res) => {
+const adminsingup = async (req,res) => {
 
     try {
         
@@ -26,19 +26,19 @@ const usersingup = async (req,res) => {
             });
         }
 
-        // check user already exists
-        const existuser = await userModel.findOne({email});
-        if(existuser){
+        // check admin already exists
+        const existadmin = await adminModel.findOne({email});
+        if(existadmin){
             return res.status(400).json({
                 success : false,
-                message : 'user already exists',
+                message : 'admin already exists',
             });
         }
 
-        const user = await userModel.create({name, email, password});
+        const admin = await adminModel.create({name, email, password, createat : Date.now()});
 
         const token = jwt.sign(
-            {userId : user._id, email : user.email},
+            {userId : admin._id, email : admin.email},
             process.env.JWT_SECRET_KEY,
             { expiresIn : '1h' }
         );
@@ -47,7 +47,7 @@ const usersingup = async (req,res) => {
             success : true,
             message : 'singup successfully...',
             token,
-            data : user
+            data : admin
         });
 
 
@@ -60,38 +60,37 @@ const usersingup = async (req,res) => {
 
 }
 
-const userlogin = async (req,res) => {
+const adminlogin = async (req,res) => {
 
     try {
         
         const {email, password} = req.body;
+        const admin = await adminModel.findOne({email});
         
-        const user = await userModel.findOne({email});
-        
-        if(!user){
+        if(!admin){
             return res.status(400).json({
                 success: false,
                 message: 'Invalid password or email',
             });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        
+        const isMatch = await bcrypt.compare(password, admin.password);
+
         if(!isMatch){
             return res.status(401).json({ success : false, message: 'Invalid credentials' });
         }
 
         const token = jwt.sign(
-            {userId : user._id, email : user.email },
+            {userId : admin._id, email : admin.email },
             process.env.JWT_SECRET_KEY,
             {expiresIn : '1h' }
         );
 
           res.status(200).json({
             success: true,
-            message: 'User logged in successfully...',
+            message: 'admin logged in successfully...',
             token,
-            data: user
+            data: admin
         });
 
     } catch (error) {
@@ -104,6 +103,6 @@ const userlogin = async (req,res) => {
 }
 
 module.exports = {
-    usersingup,
-    userlogin,
+    adminsingup,
+    adminlogin,
 }

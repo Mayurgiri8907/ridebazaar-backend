@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const connectdb = require('./config/db');
 const userRouter = require('./router/user')
+const adminRouter = require('./router/admin')
 const cors = require('cors');
 
 
@@ -12,7 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use('/api/user',userRouter);
-app.get("/", (req,res) => {
+app.use('/api/admin',adminRouter);
+app.get("/api/home", (req,res) => {
     res.send("server is runing and hii");
 });
 
