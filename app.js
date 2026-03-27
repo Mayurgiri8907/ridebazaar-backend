@@ -4,6 +4,7 @@ const app = express();
 const connectdb = require('./config/db');
 const userRouter = require('./router/user')
 const adminRouter = require('./router/admin')
+const vahicalRouter = require('./router/vahical')
 const cors = require('cors');
 
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/api/user',userRouter);
 app.use('/api/admin',adminRouter);
+app.use('/api/vahical',vahicalRouter);
 app.get("/api/home", (req,res) => {
     res.send("server is runing and hii");
 });
