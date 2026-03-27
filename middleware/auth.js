@@ -8,6 +8,7 @@ const auth = async (req,res,next) => {
         
         const token = req.header('Authorization')?.replace('Bearer ', '');
         console.log(req);
+        
         if(!token){
             return res.status(401).json({ message : 'Authentication is required' });
         }

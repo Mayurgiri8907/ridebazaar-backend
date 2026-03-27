@@ -18,22 +18,7 @@ const vehicleSchema = new mongoose.Schema(
       required: true,
     },
 
-    type: {
-      type: String,
-      enum: ["Car", "Bike"],
-      required: true,
-    },
-
-    fuel: {
-      type: [String],
-      enum: ["Petrol", "Diesel", "CNG"],
-      required: true,
-    },
-
-    images: {
-      type: [String], // store image URLs
-      validate: [(val) => val.length <= 4, "Max 4 images allowed"],
-    },
+    
     createat : {
         type : Date,
     },
