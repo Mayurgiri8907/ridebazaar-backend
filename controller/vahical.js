@@ -1,33 +1,35 @@
-const vahicalModel = require('../model/vahical');
+const vahicalModel = require('../model/vahical'); 
 
-
-const addvahical = async (req,res) => {
-
-    try {
+const addvahical = async (req, res) => {
+  try {
     const { name, description, price, type, fuel } = req.body;
 
     if (!["Car", "Bike"].includes(type)) {
       return res.status(400).json({ message: "Invalid type" });
     }
 
-    if (!name || !description || !price || !type || fuel) {
+    if (!name || !description || !price || !type) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
 
-            return res.status(400).json({
-                success: false,
-                message: 'All fields are required',
-            });
-        }
+    // fuel fix
+    let fuelData = fuel || [];
+    if (!Array.isArray(fuelData)) {
+      fuelData = [fuelData];
+    }
 
-   
-
-    const imagePaths = req.files.map((file) => file.path);
+    // images safe
+    const imagePaths = req.files?.map((file) => file.path) || [];
 
     const vehicle = await vahicalModel.create({
       name,
       description,
       price,
       type,
-      fuel,
+      fuel: fuelData,
       images: imagePaths,
     });
 
@@ -39,11 +41,10 @@ const addvahical = async (req,res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-    
-}
+};
 
 
 
 module.exports = {
-    addvahical,
+  addvahical,
 }
