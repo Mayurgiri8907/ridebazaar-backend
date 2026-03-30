@@ -4,14 +4,13 @@ const vahicalModel = require('../model/vahical');
 const addvahical = async (req,res) => {
 
     try {
-        
-        const { name, description, price, type, fuel } = req.body;
+    const { name, description, price, type, fuel } = req.body;
 
     if (!["Car", "Bike"].includes(type)) {
       return res.status(400).json({ message: "Invalid type" });
     }
 
-         if (!name || !description || !price || !type || !fuel) {
+    if (!name || !description || !price || !type || fuel) {
 
             return res.status(400).json({
                 success: false,
@@ -19,27 +18,28 @@ const addvahical = async (req,res) => {
             });
         }
 
+   
 
-        
+    const imagePaths = req.files.map((file) => file.path);
 
-        const vahical = await vahicalModel.create({name, description, price, type, fuel});
+    const vehicle = await vahicalModel.create({
+      name,
+      description,
+      price,
+      type,
+      fuel,
+      images: imagePaths,
+    });
 
-        
+    res.status(201).json({
+      message: "Vehicle added",
+      data: vehicle,
+    });
 
-        res.status(200).json({
-            success : true,
-            message : 'vahical successfully...',
-            data : vahical
-        });
-
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: `Internal server error: ${error.message}`,
-        });
-    }
-
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+    
 }
 
 

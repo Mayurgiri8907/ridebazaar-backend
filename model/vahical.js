@@ -29,6 +29,11 @@ const vehicleSchema = new mongoose.Schema(
       required : true,
     },
   ],
+  images: [
+    {
+      type: String, // store file path
+    },
+  ],
     
     createat : {
         type : Date,
