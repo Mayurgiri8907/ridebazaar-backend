@@ -5,9 +5,13 @@ const addvahical = async (req,res) => {
 
     try {
         
-        const {name, description, price} = req.body;
+        const { name, description, price, type, fuel } = req.body;
 
-         if (!name || !description || !price) {
+    if (!["Car", "Bike"].includes(type)) {
+      return res.status(400).json({ message: "Invalid type" });
+    }
+
+         if (!name || !description || !price || !type || !fuel) {
 
             return res.status(400).json({
                 success: false,
@@ -18,7 +22,7 @@ const addvahical = async (req,res) => {
 
         
 
-        const vahical = await vahicalModel.create({name, description, price});
+        const vahical = await vahicalModel.create({name, description, price, type, fuel});
 
         
 
