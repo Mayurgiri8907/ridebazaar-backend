@@ -2,10 +2,10 @@ const vahicalModel = require('../model/vahical');
 
 const addvahical = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
-
     const { name, description, price, type, fuel } = req.body;
+
+    // ✅ ADD THIS LINE HERE
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
 
     const vahical = new vahicalModel({
       name,
@@ -13,14 +13,18 @@ const addvahical = async (req, res) => {
       price,
       type,
       fuel: Array.isArray(fuel) ? fuel : [fuel],
-      image: req.file ? req.file.filename : null,
+
+      // ✅ AND USE IT HERE
+      image: req.file
+        ? `${baseUrl}/uploads/${req.file.filename}`
+        : null,
     });
 
     await vahical.save();
 
     res.json(vahical);
   } catch (err) {
-    console.error("ERROR:", err);
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
