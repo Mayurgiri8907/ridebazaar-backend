@@ -1,17 +1,13 @@
 const multer = require("multer");
+const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images/");
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const upload = multer({
-  storage,
-  limits: { files: 4 }, // max 4 images
-});
-
-module.exports = upload;
+module.exports = multer({ storage });

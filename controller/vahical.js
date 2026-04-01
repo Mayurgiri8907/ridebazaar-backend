@@ -4,22 +4,20 @@ const addvahical = async (req, res) => {
   try {
     const { name, description, price, type, fuel } = req.body;
 
-    const imagePaths = req.files.map(file => file.filename);
-
-    const vehicle = await vahicalModel.create({
+    const vahical = new vahicalModel({
       name,
       description,
       price,
       type,
-      fuel: JSON.parse(fuel), // array
-      images: imagePaths,
-      userId: req.user.id,
+      fuel: Array.isArray(fuel) ? fuel : [fuel],
+      image: req.file.filename,
     });
 
-    res.json(vehicle);
+    await vahical.save();
+
+    res.json(vahical);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ msg: err });
+    res.status(500).json({ error: err.message });
   }
 };
 

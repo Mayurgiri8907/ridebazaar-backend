@@ -1,48 +1,12 @@
-const mongoose =  require("mongoose");
+const mongoose = require("mongoose");
 
-const vehicleSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+const vahicalSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  price: Number,
+  type: String,
+  fuel: [String],
+  image: String,
+});
 
-    description: {
-      type: String,
-      required: true,
-    },
-
-    price: {
-      type: Number,
-      required: true,
-    },
-    type: {
-    type: String,
-    enum: ["Car", "Bike"],
-    required: true,
-  },
-  fuel: [
-    {
-      type: String,
-      enum: ["Petrol", "CNG", "Electric", "Diesel"],
-      required : true,
-    },
-  ],
-  images: [
-    {
-      type: String, // store file path
-    },
-  ],
-    
-    createat : {
-        type : Date,
-    },
-    updateat : {
-        type : Date,
-    }
-  },
-  { timestamps: true }
-);
-
-module.exports = mongoose.model("Vehicle", vehicleSchema);
+module.exports = mongoose.model("vahical", vahicalSchema);
