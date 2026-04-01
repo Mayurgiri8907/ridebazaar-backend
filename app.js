@@ -12,6 +12,8 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use("/images", express.static("images"));
+
 
 app.use('/api/user',userRouter);
 app.use('/api/admin',adminRouter);
