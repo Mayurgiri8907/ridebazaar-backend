@@ -4,42 +4,22 @@ const addvahical = async (req, res) => {
   try {
     const { name, description, price, type, fuel } = req.body;
 
-    if (!["Car", "Bike"].includes(type)) {
-      return res.status(400).json({ message: "Invalid type" });
-    }
-
-    if (!name || !description || !price || !type) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
-
-    // fuel fix
-    let fuelData = fuel || [];
-    if (!Array.isArray(fuelData)) {
-      fuelData = [fuelData];
-    }
-
-    // images safe
-    const imagePaths = req.files?.map((file) => file.path) || [];
+    const imagePaths = req.files.map(file => file.filename);
 
     const vehicle = await vahicalModel.create({
       name,
       description,
       price,
       type,
-      fuel: fuelData,
+      fuel: JSON.parse(fuel), // array
       images: imagePaths,
+      userId: req.user.id,
     });
 
-    res.status(201).json({
-      message: "Vehicle added",
-      data: vehicle,
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json(vehicle);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: err });
   }
 };
 
