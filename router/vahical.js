@@ -20,6 +20,6 @@ router.post(
 );
 
 router.get("/show",auth,vahicalController.showvahical);
-router.post('/showvahical',vahicalController.showvahical)
+router.get('/showvahical',vahicalController.showvahical)
 router.delete('/:id',auth,vahicalController.deletevahical)
 module.exports = router;
