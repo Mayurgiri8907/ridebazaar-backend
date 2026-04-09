@@ -10,7 +10,12 @@ const upload = require('../middleware/upload');
 router.post(
   "/add",
   auth,
-  upload.array("images", 4),
+  upload.fields([
+    { name: "front" },
+    { name: "back" },
+    { name: "left" },
+    { name: "right" },
+  ]),
   vahicalController.addvahical
 );
 

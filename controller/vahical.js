@@ -6,32 +6,44 @@ const addvahical = async (req, res) => {
 
     const baseUrl = `${req.protocol}://${req.get("host")}`;
 
-    // ✅ MULTIPLE IMAGES
-    const imageUrls = req.files.map(
-      (file) => `${baseUrl}/uploads/${file.filename}`
-    );
+    // ✅ HANDLE MULTIPLE IMAGES SAFELY
+    let imageUrls = [];
+
+    if (req.files && req.files.length > 0) {
+      imageUrls = req.files.map(
+        (file) => `${baseUrl}/uploads/${file.filename}`
+      );
+    }
 
     const vahical = new vahicalModel({
       name,
       description,
       price,
       type,
-      fuel: Array.isArray(fuel) ? fuel : [fuel],
-      images: imageUrls, // 👈 store array
+
+      // ✅ always store as array
+      fuel: Array.isArray(fuel) ? fuel : fuel ? [fuel] : [],
+
+      images: imageUrls,
     });
 
     await vahical.save();
 
-    res.json({
-      success : true,
-      message : "vahical added successfully...",
-      data : vahical
+    res.status(201).json({
+      success: true,
+      message: "vahical added successfully...",
+      data: vahical,
     });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error("ADD VAHICAL ERROR:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
   }
 };
+
 
 
 
