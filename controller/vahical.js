@@ -6,24 +6,31 @@ const addvahical = async (req, res) => {
 
     const baseUrl = `${req.protocol}://${req.get("host")}`;
 
-    // ✅ HANDLE MULTIPLE IMAGES SAFELY
-    let imageUrls = [];
+    // ✅ get files safely
+    const files = req.files || {};
 
-    if (req.files && req.files.length > 0) {
-      imageUrls = req.files.map(
-        (file) => `${baseUrl}/uploads/${file.filename}`
-      );
-    }
+    // ✅ build image object (matches schema)
+    const imageUrls = {
+      front: files.front?.[0]
+        ? `${baseUrl}/uploads/${files.front[0].filename}`
+        : "",
+      back: files.back?.[0]
+        ? `${baseUrl}/uploads/${files.back[0].filename}`
+        : "",
+      left: files.left?.[0]
+        ? `${baseUrl}/uploads/${files.left[0].filename}`
+        : "",
+      right: files.right?.[0]
+        ? `${baseUrl}/uploads/${files.right[0].filename}`
+        : "",
+    };
 
     const vahical = new vahicalModel({
       name,
       description,
       price,
       type,
-
-      // ✅ always store as array
       fuel: Array.isArray(fuel) ? fuel : fuel ? [fuel] : [],
-
       images: imageUrls,
     });
 
