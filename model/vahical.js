@@ -6,7 +6,12 @@ const vahicalSchema = new mongoose.Schema({
   price: Number,
   type: String,
   fuel: [String],
-  image: String,
+  images: {
+    front: String,
+    back: String,
+    left: String,
+    right: String,
+  },
 });
 
 module.exports = mongoose.model("vahical", vahicalSchema);
