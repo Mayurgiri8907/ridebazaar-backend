@@ -9,6 +9,7 @@ const upload = require('../middleware/upload');
 
 router.post(
   "/add",
+  auth,
   upload.fields([
     { name: "front", maxCount: 1 },
     { name: "back", maxCount: 1 },
@@ -17,5 +18,7 @@ router.post(
   ]),
   vahicalController.addvahical
 );
+
+router.get("/show",auth,vahicalController.showvahical);
 
 module.exports = router;

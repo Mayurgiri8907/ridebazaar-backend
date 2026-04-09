@@ -1,4 +1,4 @@
-const vahicalModel = require('../model/vahical'); 
+const vahicalModel = require('../model/vahical');
 
 const addvahical = async (req, res) => {
   try {
@@ -51,9 +51,28 @@ const addvahical = async (req, res) => {
   }
 };
 
+const showvahical = async (req,res) => {
 
+  try {
+
+    const vahicaldata = await vahicalModel.find();
+
+    res.status(201).json({
+      success: true,
+      message: "vahical data shows successfully...",
+      data: vahicaldata,
+    });
+
+  } catch (error) {
+      res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+}
 
 
 module.exports = {
   addvahical,
+  showvahical,
 }
