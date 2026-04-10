@@ -97,10 +97,39 @@ const deletevahical = async (req, res) => {
   }
 };
 
+const singlevahical = async (req,res) => {
 
+  try {
+    
+    const { id } = req.params;
+
+    const vahical = await vahicalModel.findById(id);
+
+    if (!vahical) {
+      return res.status(404).json({
+        success: false,
+        message: "vahical not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "single vahical show successfully",
+      data : vahical
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+
+}
 
 module.exports = {
   addvahical,
   showvahical,
   deletevahical,
+  singlevahical,
 }
