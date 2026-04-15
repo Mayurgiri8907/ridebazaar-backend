@@ -127,9 +127,70 @@ const singlevahical = async (req,res) => {
 
 }
 
+const caronly = async (req,res) => {
+    
+    try {
+
+    const vahicaldata = await vahicalModel.find({ type: "Car" });
+
+    if(vahicaldata.length === 0) {
+      res.status(200).json({
+      success: true,
+      message: "Vahical Car is Not Available",
+    });
+
+    }
+    res.status(200).json({
+      success: true,
+      message: "vahical Car data shows successfully...",
+      data: vahicaldata,
+    });
+
+  } catch (error) {
+      res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+
+}
+
+
+const bikeonly = async (req,res) => {
+    
+    try {
+
+    const vahicaldata = await vahicalModel.find({ type: "Bike" });
+
+    if(vahicaldata.length === 0) {
+      res.status(200).json({
+      success: true,
+      message: "Vahical Bike is Not Available",
+    });
+
+    }
+    res.status(200).json({
+      success: true,
+      message: "vahical Bike data shows successfully...",
+      data: vahicaldata,
+    });
+
+  } catch (error) {
+      res.status(500).json({
+      success: false,
+      message: err.message || "Server Error",
+    });
+  }
+
+}
+
+
+
 module.exports = {
   addvahical,
   showvahical,
   deletevahical,
   singlevahical,
+  caronly,
+  bikeonly,
 }
