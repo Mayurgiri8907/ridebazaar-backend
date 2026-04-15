@@ -128,9 +128,50 @@ const showallusers = async (req, res) => {
       message: `Internal server error: ${error.message}`,
     });
   }
+} 
+
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    //  Check admin role
+    if (!req.user || req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Only admin can delete users",
+      });
+    }
+
+    //  Check user exists
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    //  Delete user
+    await userModel.findByIdAndDelete(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Server error: ${error.message}`,
+    });
+  }
 };
+
+
 module.exports = {
     adminsingup,
     adminlogin,
     showallusers,
+    deleteUser,
 }
