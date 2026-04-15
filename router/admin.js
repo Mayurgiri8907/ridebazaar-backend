@@ -5,5 +5,6 @@ const adminController = require('../controller/admin');
 
 router.post('/',adminController.adminlogin)
 router.post('/singup',adminController.adminsingup)
+router.get('/users',auth,adminController.showallusers)
 
 module.exports = router;

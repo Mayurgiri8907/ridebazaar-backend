@@ -1,4 +1,5 @@
 const adminModel = require('../model/admin');
+const userModel = require('../model/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -38,10 +39,10 @@ const adminsingup = async (req,res) => {
         const admin = await adminModel.create({name, email, password, createat : Date.now()});
 
         const token = jwt.sign(
-            {userId : admin._id, email : admin.email},
-            process.env.JWT_SECRET_KEY,
-            { expiresIn : '1h' }
-        );
+  { userId: admin._id, email: admin.email, role: admin.role },
+  process.env.JWT_SECRET_KEY,
+  { expiresIn: "1h" }
+);
 
         res.status(200).json({
             success : true,
@@ -80,11 +81,11 @@ const adminlogin = async (req,res) => {
             return res.status(401).json({ success : false, message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign(
-            {userId : admin._id, email : admin.email },
-            process.env.JWT_SECRET_KEY,
-            {expiresIn : '1h' }
-        );
+  const token = jwt.sign(
+  { userId: admin._id, email: admin.email, role: admin.role },
+  process.env.JWT_SECRET_KEY,
+  { expiresIn: "1h" }
+);
 
           res.status(200).json({
             success: true,
@@ -102,7 +103,34 @@ const adminlogin = async (req,res) => {
 
 }
 
+const showallusers = async (req, res) => {
+  try {
+    //  Safe access
+    if (!req.user || req.user.role !== "admin") {
+        
+      return res.status(403).json({
+        success: false,
+        message: "Only admins can access this",
+      });
+    }
+
+    const users = await userModel.find();
+
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: users,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Internal server error: ${error.message}`,
+    });
+  }
+};
 module.exports = {
     adminsingup,
     adminlogin,
+    showallusers,
 }
