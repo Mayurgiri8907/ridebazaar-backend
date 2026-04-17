@@ -5,6 +5,7 @@ const connectdb = require('./config/db');
 const userRouter = require('./router/user')
 const adminRouter = require('./router/admin')
 const vahicalRouter = require('./router/vahical')
+const orderRouter = require('./router/order')
 const cors = require('cors');
 const path = require("path");
 
@@ -22,6 +23,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/api/user',userRouter);
 app.use('/api/admin',adminRouter);
 app.use('/api/vahical',vahicalRouter);
+app.use('/api/order',orderRouter);
 app.get("/api/home", (req,res) => {
     res.send("server is runing and hii");
 });
