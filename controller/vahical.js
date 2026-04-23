@@ -4,25 +4,15 @@ const addvahical = async (req, res) => {
   try {
     const { name, description, price, type, fuel } = req.body;
 
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
-
     // ✅ get files safely
     const files = req.files || {};
 
-    // ✅ build image object (matches schema)
+    // ✅ S3 URLs (IMPORTANT CHANGE)
     const imageUrls = {
-      front: files.front?.[0]
-        ? `${baseUrl}/uploads/${files.front[0].filename}`
-        : "",
-      back: files.back?.[0]
-        ? `${baseUrl}/uploads/${files.back[0].filename}`
-        : "",
-      left: files.left?.[0]
-        ? `${baseUrl}/uploads/${files.left[0].filename}`
-        : "",
-      right: files.right?.[0]
-        ? `${baseUrl}/uploads/${files.right[0].filename}`
-        : "",
+      front: files.front?.[0]?.location || "",
+      back: files.back?.[0]?.location || "",
+      left: files.left?.[0]?.location || "",
+      right: files.right?.[0]?.location || "",
     };
 
     const vahical = new vahicalModel({
