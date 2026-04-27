@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
   vehicleId: String,
+  userId : String,
   price: Number,
   paymentId: String,
   orderId: String,

@@ -13,6 +13,11 @@ const vahicalSchema = new mongoose.Schema(
       required: true,
     },
 
+    totalprice: {
+      type: Number,
+      required: true,
+    }, 
+
     price: {
       type: Number,
       required: true,

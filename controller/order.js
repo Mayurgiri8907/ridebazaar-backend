@@ -111,9 +111,8 @@ const paymentVerify = async (req, res) => {
 
     //  SAVE ORDER
     const order = await orderModel.create({
-      userId: user?.userId,
-      userEmail: user?.email,
       vehicleId,
+      userId: user?.userId,
       price,
       paymentId: razorpay_payment_id,
       orderId: razorpay_order_id,
@@ -150,6 +149,7 @@ const paymentVerify = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 module.exports = {
     saveAddress,

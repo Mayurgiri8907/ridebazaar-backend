@@ -1,5 +1,7 @@
 const adminModel = require('../model/admin');
 const userModel = require('../model/user');
+const addressModel = require('../model/Address');
+const orderModel = require('../model/order');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -167,6 +169,7 @@ const deleteUser = async (req, res) => {
     });
   }
 };
+
 
 
 module.exports = {

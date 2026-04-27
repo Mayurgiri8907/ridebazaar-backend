@@ -2,7 +2,7 @@ const vahicalModel = require('../model/vahical');
 
 const addvahical = async (req, res) => {
   try {
-    const { name, description, price, type, fuel } = req.body;
+    const { name, description, totalprice,price, type, fuel } = req.body;
 
     // ✅ get files safely
     const files = req.files || {};
@@ -18,6 +18,7 @@ const addvahical = async (req, res) => {
     const vahical = new vahicalModel({
       name,
       description,
+      totalprice,
       price,
       type,
       fuel: Array.isArray(fuel) ? fuel : fuel ? [fuel] : [],
